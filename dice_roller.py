@@ -5,39 +5,48 @@ Program Name: dice_roller.py
 Purpose: A randomized dice roller game.
 Author: Aidan Simard
 Date: 3/10/2026
-Version: 1.1
+Version: 1.2
 """
 
 import random
 
-while True:
-    num_dice = 0
-    while num_dice <= 0:
-        num_dice = int(input("Enter a number of dice(must be greater than 0): "))
-        if num_dice <= 0:
-            print("Invalid input. Please put a prompt greater than 0.")
+#basically this part is just asking for the prompts and making sure the user can't put a number equal or less than 0
+def get_numdice():
+    while True:
+        num = int(input("Enter number of dice: "))
+        if num > 0:
+            return num
+        print("Must be at least 1!")
 
-    die_faces = 0
-    while die_faces <= 0:
-        die_faces = int(input("Enter the number of faces(must be greater than 0):"))
-        if die_faces <= 0:
-            print("Invalid input. Please put a prompt greater than 0.")
 
-        min_val = num_dice * 1
-        max_val = num_dice * die_faces
+def get_diefaces():
+    while True:
+        faces = int(input("Enter number of faces: "))
+        if faces > 0:
+            return faces
+        print("Must be at least 1!")
 
-        roll_result = random.randint(min_val, max_val)
+#this part is just for fact checking just to clarify the output for the script
+def roll_dice(num_dice, die_faces):
+    return random.randint(num_dice, num_dice * die_faces)
 
-        print("The result of of your roll:" , roll_result)
 
-        if roll_result == max_val:
-            print("You rolled the max value!")
-        elif roll_result == min_val:
-            print("You rolled the min value!")
+def is_max_score(roll, max_val):
+    return roll == max_val
 
-    repeat = input ("Do you want to roll again? (y/n): ")
-    if repeat == "y":
-        print("Roll Again!")
 
-    elif repeat == "n":
-        break
+# Main Part of the program, basically if the user wishes to continue the script, and the various prints 
+def main():
+    playing = "y"
+    while playing.lower() == "y":
+        dice = get_numdice()
+        faces = get_diefaces()
+        result = roll_dice(dice, faces)
+
+        print("You rolled:" ,result)
+
+        if is_max_score(result, dice * faces):
+            print("CONGRATULATIONS! Max score!")
+
+        playing = input("Roll again? (y/n): ")
+main()
